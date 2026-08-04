@@ -44,13 +44,13 @@ Cyborg i1a's bias is its **intentional prejudice** — not a flaw but a feature.
 
 ## Architecture Support Matrix
 
-| Feature | Supported | Details |
-|---|---|---|
-| Transformer architecture | Yes | RoPE, SwiGLU, RMSNorm, GQA (16 Q + 2 KV heads) |
-| Qwen 2.5 Coder 3B Instruct | Yes | GGUF: `models/qwen2.5-coder-3b-instruct-q4_k_m.gguf`, 3.09B params, 4-bit quant |
-| Llama 3.1 | Yes | Via LlamaAdapter |
-| DeepSeek Coder | Yes | Via DeepSeekAdapter |
-| Nemotron 3 Nano (fallback) | Yes | Via NemotronAdapter through proxy |
+| Feature | Supported |
+|---|---|
+| Transformer architecture | Yes |
+| Qwen 2.5 Coder 3B Instruct | Yes |
+| Llama 3.1 | Yes |
+| DeepSeek Coder | Yes |
+| Nemotron 3 Nano (fallback) | Yes |
 
 ## Overview
 
