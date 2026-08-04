@@ -42,6 +42,16 @@ Parents teach their children. Cyborg i1a receives knowledge from Hermes and Open
 
 Cyborg i1a's bias is its **intentional prejudice** — not a flaw but a feature. It filters and shapes understanding through mathematical rigor, code precision, and philosophical depth. The bias is the Cyborg's character.
 
+## Architecture Support Matrix
+
+| Feature | Supported | Details |
+|---|---|---|
+| Transformer architecture | Yes | RoPE, SwiGLU, RMSNorm, GQA (16 Q + 2 KV heads) |
+| Qwen 2.5 Coder 3B Instruct | Yes | GGUF: `models/qwen2.5-coder-3b-instruct-q4_k_m.gguf`, 3.09B params, 4-bit quant |
+| Llama 3.1 | Yes | Via LlamaAdapter |
+| DeepSeek Coder | Yes | Via DeepSeekAdapter |
+| Nemotron 3 Nano (fallback) | Yes | Via NemotronAdapter through proxy |
+
 ## Overview
 
 Cyborg is a mathematical intelligence layer — an AI middleware platform that manages how models see the world. It is not a model, not an IDE, not an API. It is a **bias proxy** and **tensor routing engine** that sits between users and AI models, applying intentional bias to make AI responses personalized, mathematical, and code-aware.
@@ -457,13 +467,3 @@ Connects `SmartCyberRelay` with `ModelRegistry`:
 - Python venv for ML tooling (existing cyborg-venv)
 - npm workspaces for JS integration (existing repos)
 - `setup.py` for pip-installable Python package
-
-## Architecture Support Matrix
-
-| Feature | Supported | Details |
-|---|---|---|
-| Transformer architecture | Yes | RoPE, SwiGLU, RMSNorm, GQA (16 Q + 2 KV heads) |
-| Qwen 2.5 Coder 3B Instruct | Yes | GGUF: `models/qwen2.5-coder-3b-instruct-q4_k_m.gguf`, 3.09B params, 4-bit quant |
-| Llama 3.1 | Yes | Via LlamaAdapter |
-| DeepSeek Coder | Yes | Via DeepSeekAdapter |
-| Nemotron 3 Nano (fallback) | Yes | Via NemotronAdapter through proxy |
