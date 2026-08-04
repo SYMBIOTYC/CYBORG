@@ -221,7 +221,7 @@ else:
 ### ModelAdapter Base Class
 
 Все адаптеры моделей наследуются от `ModelAdapter`:
-- `QwenAdapter` — Qwen 2.5 Coder
+- `QwenAdapter` — Qwen 2.5 Coder 3B Instruct (GGUF: `models/qwen2.5-coder-3b-instruct-q4_k_m.gguf`, ~2 GB, 4-bit quant). Transformer-архитектура: RoPE, SwiGLU, RMSNorm, GQA (16 Q + 2 KV heads), 3.09B params. Лицензия: `qwen-research`.
 - `LlamaAdapter` — Llama 3.1
 - `DeepSeekAdapter` — DeepSeek Coder
 - `NemotronAdapter` — Nemotron 3 Nano (fallback через прокси)
