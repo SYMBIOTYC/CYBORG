@@ -1,48 +1,8 @@
-# Build artifacts
-cyborg-core/build/
-models/build/
-python/build/
-cmake-build-*/
-CMakeCache.txt
-CMakeFiles/
-Makefile
-cmake_install.cmake
-install_manifest.txt
-*.o
-*.o.d
-*.a
-*.so
-*.dylib
-
-# Models
-*.gguf
-*.bin
-*.safetensors
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.egg-info/
+.DS_Store
+*.log
+*.tmp
+node_modules/
 dist/
 build/
-
-# IDE
-.vscode/
-.idea/
 *.swp
 *.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Env
-.env
-.venv/
-venv/
-
-# Subprojects
-codex/
-hermes/
-openclaw/
