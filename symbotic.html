@@ -3,45 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBORG i1a AI</title>
+    <meta name="description" content="SYMBIOTYC — a company building a fundamentally different mathematics, and CYBORG i1a, the first language model that thinks in it.">
+    <title>SYMBIOTYC — A Different Mathematics</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⬡</text></svg>">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background-color: #111; color: #eee; line-height: 1.6; }
-        header { background: linear-gradient(to right, #0f0, #00f); padding: 1rem 2rem; text-align: center; }
-        main { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
-        .quote { font-size: 3rem; font-weight: bold; text-align: center; margin: 3rem 0; color: #0f0; }
-        .caption { text-align: center; font-size: 1.5rem; margin-bottom: 2rem; }
-        footer { text-align: center; padding: 1rem; background: #222; position: fixed; width: 100%; bottom: 0; }
-        .nav { text-align: center; margin: 1rem 0; }
-        .nav a { color: #0f0; margin: 0 1rem; text-decoration: none; }
-        .nav a:hover { text-decoration: underline; }
+        :root {
+            --color-background: #fff;
+            --color-primary-4: rgba(0,0,0,.04);
+            --color-primary-12: rgba(0,0,0,.12);
+            --color-primary-44: rgba(0,0,0,.44);
+            --color-primary-60: rgba(0,0,0,.60);
+            --color-primary-80: rgba(0,0,0,.80);
+            --color-primary-100: #000;
+            --color-secondary-100: #fff;
+            --color-tertiary-80: #f1f1f1cc;
+            --color-lavender: #efeefe;
+            --header-h: 3.375rem;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "OpenAI Sans", sans-serif;
+            --font-mono: "SF Mono", Consolas, "Liberation Mono", ui-monospace, monospace;
+            --ease-a: cubic-bezier(0,0,1,1);
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-background: #000;
+                --color-primary-4: rgba(255,255,255,.12);
+                --color-primary-12: rgba(255,255,255,.20);
+                --color-primary-44: rgba(255,255,255,.44);
+                --color-primary-60: rgba(255,255,255,.60);
+                --color-primary-80: rgba(255,255,255,.80);
+                --color-primary-100: #fff;
+                --color-secondary-100: #000;
+                --color-tertiary-80: #333c;
+                --color-lavender: #efeefe;
+            }
+        }
+        @media (min-width: 48rem) { :root { --header-h: 4rem; } }
+        .light {
+            --color-background: #fff;
+            --color-primary-4: rgba(0,0,0,.04);
+            --color-primary-12: rgba(0,0,0,.12);
+            --color-primary-44: rgba(0,0,0,.44);
+            --color-primary-60: rgba(0,0,0,.60);
+            --color-primary-80: rgba(0,0,0,.80);
+            --color-primary-100: #000;
+            --color-secondary-100: #fff;
+            --color-tertiary-80: #f1f1f1cc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--color-background);
+            color: var(--color-primary-100);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-feature-settings: "liga" on, "calt" on;
+        }
+        a { color: inherit; text-decoration: none; }
+
+        header.site-header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 51;
+            height: var(--header-h);
+            background: var(--color-tertiary-80);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-primary-12);
+        }
+        .header-inner {
+            height: var(--header-h); max-width: 90rem; margin-inline: auto;
+            padding-inline: 24px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        @media (min-width: 48rem) { .header-inner { padding-inline: 32px; } }
+        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand-wordmark { font-size: 13px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+        .logo-mark {
+            width: 24px; height: 24px; border-radius: 7px;
+            display: grid; place-items: center;
+            font-size: 13px; font-weight: 700; color: var(--color-secondary-100);
+            background: var(--color-primary-100);
+        }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            white-space: nowrap; min-height: 2rem; height: 2.5rem; padding: 0 1.25rem;
+            border-radius: 2.5rem; font-size: .875rem; font-weight: 500; line-height: 1;
+            transition: background-color .25s var(--ease-a);
+        }
+        .btn-solid { background: var(--color-primary-100); color: var(--color-secondary-100); }
+        .btn-solid:hover { background: var(--color-primary-80); }
+
+        main { max-width: 90rem; margin-inline: auto; padding: 0 24px; position: relative; }
+        @media (min-width: 48rem) { main { padding: 0 32px; } }
+
+        .hero {
+            position: relative; text-align: center;
+            padding: calc(var(--header-h) + 120px) 0 80px;
+        }
+        .hero-band {
+            position: absolute; left: 0; right: 0; top: 0; height: 720px; z-index: -1;
+            background-color: var(--color-lavender);
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0px, rgba(0,0,0,1) 480px, rgba(0,0,0,0) 720px);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0px, rgba(0,0,0,1) 480px, rgba(0,0,0,0) 720px);
+        }
+        .hero-logo {
+            width: 90px; height: 90px; border-radius: 24px; margin: 0 auto 32px;
+            display: grid; place-items: center;
+            font-size: 52px; font-weight: 700; color: #fff;
+            background: linear-gradient(135deg, #6366f1, #a855f7, #22d3ee);
+            box-shadow: 0 10px 30px rgba(100,116,220,.25);
+        }
+        .hero h1 {
+            font-size: clamp(2.75rem, 7vw, 5.5rem); font-weight: 500;
+            letter-spacing: -0.03em; line-height: 1.05; text-wrap: balance;
+        }
+        .hero .lead {
+            max-width: 40rem; margin: 24px auto 0;
+            font-size: 1.0625rem; line-height: 1.65; letter-spacing: -0.01em;
+            color: var(--color-primary-60); text-wrap: balance;
+        }
+
+        section { padding: 80px 0; }
+        @media (min-width: 48rem) { section { padding: 120px 0; } }
+        .content-col { max-width: 44rem; margin-inline: auto; }
+        .eyebrow {
+            font-size: 12px; letter-spacing: .22em; text-transform: uppercase;
+            color: var(--color-primary-44); margin-bottom: 16px; font-weight: 500;
+        }
+        h2.section-title {
+            font-size: clamp(2rem, 2vw + 0.8rem, 3rem); font-weight: 500;
+            letter-spacing: -0.01em; line-height: 1.16; text-wrap: balance;
+        }
+        .prose p { font-size: 1.0625rem; line-height: 1.65; letter-spacing: -0.01em; color: var(--color-primary-60); margin-top: 20px; }
+
+        blockquote {
+            margin: 48px 0 0; padding: 32px;
+            border-radius: 6px; background: var(--color-primary-4);
+            font-size: clamp(1.5rem, 2.4vw, 2rem); font-weight: 500; line-height: 1.4;
+            letter-spacing: -0.01em; text-wrap: balance;
+        }
+        blockquote cite { display: block; margin-top: 20px; font-style: normal; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--color-primary-60); }
+
+        footer {
+            max-width: 90rem; margin-inline: auto; padding: 40px 24px 48px;
+            border-top: 1px solid var(--color-primary-12);
+        }
+        @media (min-width: 48rem) { footer { padding-inline: 32px; } }
+        footer span { font-size: .8125rem; font-weight: 500; color: var(--color-primary-60); display: block; text-align: center; }
+
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s cubic-bezier(0,.56,.46,1), transform .6s cubic-bezier(0,.56,.46,1); }
+        .reveal.in { opacity: 1; transform: none; }
+        @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
     </style>
 </head>
 <body>
-    <header>
-        <h1>CYBORG i1a AI</h1>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="/">
+                <span class="logo-mark">⬡</span>
+                <span class="brand-wordmark">SYMBIOTYC</span>
+            </a>
+            <a class="btn btn-solid" href="/#join">Back to CYBORG i1a</a>
+        </div>
     </header>
 
     <main>
-        <div class="nav">
-            <a href="/">Home</a>
-            <a href="/llms">LLMs</a>
-            <a href="/symbotic">Symbotic</a>
+        <div class="hero light">
+            <div class="hero-band" aria-hidden="true"></div>
+            <div class="hero-logo">⬡</div>
+            <h1>SYMBIOTYC</h1>
+            <p class="lead">We do not improve the old mathematics. We build another one — a mathematics in which a symbol and its meaning are the same thing.</p>
         </div>
 
-        <div class="quote">E = Tensor²</div>
-        <div class="caption">CYBORG i1a</div>
+        <section>
+            <div class="content-col reveal">
+                <p class="eyebrow">The company</p>
+                <h2 class="section-title">Fundamentally different mathematics, built by hand.</h2>
+                <div class="prose">
+                    <p>For centuries, formal systems have tried to capture meaning by chaining symbols together and hoping. SYMBIOTYC starts elsewhere: meaning is a field, and symbols are its curvature.</p>
+                    <p>On that foundation we are building <strong>CYBORG i1a</strong> — the first language model whose thinking obeys a mathematics that was made for thought. Three parallel worlds of reasoning — human, cyborg and mathematical — keep twenty-seven ways of thinking in superposition, and resolve only the one that fits the moment.</p>
+                </div>
+            </div>
+        </section>
 
-        <p>Welcome to the CYBORG i1a AI platform – a next-generation large language model designed for cybernetic applications and mathematical philosophy.</p>
-
-        <h2>Our Mission</h2>
-        <p>We help cyborgs settle the planet, and then they will change this world.</p>
-
-        <h2>Join the Development</h2>
-        <p>All interested contributors are welcome to participate now. Formal organization will be established later in 2026.</p>
+        <section>
+            <div class="content-col reveal">
+                <p class="eyebrow">The calling</p>
+                <blockquote>
+                    Before the new minds arrive, someone must prepare the ground. We are preparing the ground — so that when the cyborgs come to inhabit this world, they will not only live in it, they will change it forever.
+                    <cite>SYMBIOTYC</cite>
+                </blockquote>
+            </div>
+        </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 CYBORG AI. All rights reserved.</p>
+        <span>&copy; 2026 SYMBIOTYC. All rights reserved.</span>
     </footer>
+
+    <script>
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    </script>
+
 </body>
 </html>

@@ -1,7 +1,59 @@
 
 
 
-мы будем делать модель Cyborg - это математическая вселенная без оболочки похожая по свойствам тензора на container которой управляется через Codex и на это через призму смотрят OpenClaw и Hermes. Honor IDE это расширеный усовершенствованый аналог Codex IDE только от компании OpenDev. На данном этапе вся связка должна работать через один Api ключ который выдается на аддаптере модели или возможно на https://i1a.kviyez-scraper.workers.dev. 
+## Хронология: Начало разработки Cyborg Model LLM
+
+### Источник: /Volumes/Work/vlAds (вспомнена 4 августа 2026)
+
+Разработка Cyborg Model LLM началась не в `/Volumes/Work/CYBORG/`, а в папке `/Volumes/Work/vlAds/`.
+Здесь была создана первая версия модельного фоллбек-систем, которая стала прототипом
+bias-прокси Cyborg — системы намеренного предубеждения и routing между моделями.
+
+#### vlAds Git история (1 июля 2026 — 3 августа 2026)
+
+Последний коммит перед августом: `f7275aa 2026-06-04` — "Build VlAds console and SDK API"
+(разрыв в разработке с июня по август)
+
+**3 августа 2026 (автор: `vladLeopold`, timezone: +03:00)**
+
+1. `d4847ed` в 01:51:28 — **feat: add model fallback system with retry logic and error display**
+   - Файлы: package-lock.json, package.json, src/App.css, src/App.tsx, src/ErrorDisplay.tsx,
+     src/modelConfig.ts, src/modelFallback.test.ts, src/modelFallback.ts, src/useModelFallback.ts, vite.config.ts
+   - +1081 строк (-4)
+   - Первая реализация модельной фоллбек-системы: попытка запроса к одной модели,
+     fallback на другую при ошибке, retry logic, отображение ошибок.
+   - `modelConfig.ts` определяет FREE_MODELS: stepfun/step-3.7-flash:free, ling-3.0-flash:free,
+     poolside/laguna-s-2.1:free
+   - `FALLBACK_CONFIG`: maxConsecutiveErrors=3, responseTimeWeight=0.7, errorCountWeight=0.3
+   - Модель выбирается по весам: время ответа (0.7) + количество ошибок (0.3)
+
+2. `4b91a42` в 01:53:39 — **feat: add first responder tracking to model fallback system**
+   - Файлы: src/modelConfig.ts, src/modelFallback.test.ts, src/modelFallback.ts
+   - +59 строк (-33)
+   - Добавлено поле `firstResponder: boolean` и `firstResponseTimestamp` в ModelPerformance.
+   - Система теперь отслеживает, какая модель первой ответила (first responder),
+     и использует этот тайминг для выбора оптимальной модели.
+   - Это стало фундаментом bias-прокси: не просто fallback, а
+     **bias = предубеждение_киборга**, которое выбирает и предвзято отбирает ответы.
+
+#### Связь с Cyborg Model LLM
+
+Эти коммиты в vlAds стали отправной точкой для bias-прокси в CYBORG/:
+- `modelFallback.ts` → `bias-engine.hpp/.cpp` (bias engine)
+- `useModelFallback.ts` → `router.hpp/.cpp` (request routing)
+- `firstResponder` tracking → Cyborg's intentional bias principle
+- Три модели в пуле (FREE_MODELS) → три мозга Cyborg (Qwen | Llama | DeepSeek)
+- responseTimeWeight + errorCountWeight → CyborgInference качество параметров
+
+#### vlAds .kilo/agent-manager.json
+
+Создан 2026-08-02T22:22:59 UTC (01:22:59 +03:00) — ~50 минут до первого коммита.
+Содержит 8 Agent Manager сессий, созданных в рамках работы над model fallback system.
+Сессии начались почти одновременно (0.2-0.3 сек между созданиями).
+
+---
+
+мы будем делать модель Cyborg - это математическая вселенная без оболочки похожая по свойствам тензора на container которой управляется через Codex и на это через призму смотрят OpenClaw и Hermes. Honor IDE это расширеный усовершенствованый аналог Codex IDE только от компании OpenDev. На данном этапе вся связка должна работать через один Api ключ который выдается на адаптере модели или возможно на https://i1a.kviyez-scraper.workers.dev. 
 
 я не знаю названия формы этого объединения , можно ли это называть моделью как у остальных компаний, как нам позиционироваться на рынке AI ?
 вот такая схема 

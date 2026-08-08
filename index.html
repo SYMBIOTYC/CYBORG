@@ -3,45 +3,824 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBORG i1a AI</title>
+    <meta name="description" content="CYBORG i1a — a new LLM coming soon. The first language model built on a fundamentally different mathematics, by SYMBIOTYC.">
+    <title>CYBORG i1a — LLM Coming Soon | SYMBIOTYC</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⬡</text></svg>">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background-color: #111; color: #eee; line-height: 1.6; }
-        header { background: linear-gradient(to right, #0f0, #00f); padding: 1rem 2rem; text-align: center; }
-        main { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
-        .quote { font-size: 3rem; font-weight: bold; text-align: center; margin: 3rem 0; color: #0f0; }
-        .caption { text-align: center; font-size: 1.5rem; margin-bottom: 2rem; }
-        footer { text-align: center; padding: 1rem; background: #222; position: fixed; width: 100%; bottom: 0; }
-        .nav { text-align: center; margin: 1rem 0; }
-        .nav a { color: #0f0; margin: 0 1rem; text-decoration: none; }
-        .nav a:hover { text-decoration: underline; }
+        :root {
+            --color-background: #fff;
+            --color-primary-4: rgba(0,0,0,.04);
+            --color-primary-12: rgba(0,0,0,.12);
+            --color-primary-44: rgba(0,0,0,.44);
+            --color-primary-60: rgba(0,0,0,.60);
+            --color-primary-80: rgba(0,0,0,.80);
+            --color-primary-100: #000;
+            --color-secondary-100: #fff;
+            --color-tertiary-80: #f1f1f1cc;
+            --color-tertiary-100: #f1f1f1;
+            --color-lavender: #efeefe;
+            --header-h: 3.375rem;
+            --grid-gap: 8px;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "OpenAI Sans", sans-serif;
+            --font-mono: "SF Mono", Consolas, "Liberation Mono", ui-monospace, monospace;
+            --ease-a: cubic-bezier(0,0,1,1);
+            --ease-c: cubic-bezier(0,.56,.46,1);
+        }
+        @media (prefers-color-scheme: dark) {
+            :root:not(:where(.light)) {
+                --color-background: #000;
+                --color-primary-4: rgba(255,255,255,.12);
+                --color-primary-12: rgba(255,255,255,.20);
+                --color-primary-44: rgba(255,255,255,.44);
+                --color-primary-60: rgba(255,255,255,.60);
+                --color-primary-80: rgba(255,255,255,.80);
+                --color-primary-100: #fff;
+                --color-secondary-100: #000;
+                --color-tertiary-80: #333c;
+                --color-tertiary-100: #1f1f1f;
+                --color-lavender: #efeefe;
+            }
+        }
+        html.light, .light {
+            --color-background: #fff;
+            --color-primary-4: rgba(0,0,0,.04);
+            --color-primary-12: rgba(0,0,0,.12);
+            --color-primary-44: rgba(0,0,0,.44);
+            --color-primary-60: rgba(0,0,0,.60);
+            --color-primary-80: rgba(0,0,0,.80);
+            --color-primary-100: #000;
+            --color-secondary-100: #fff;
+            --color-tertiary-80: #f1f1f1cc;
+            --color-tertiary-100: #f1f1f1;
+        }
+        html.dark, .dark {
+            --color-background: #000;
+            --color-primary-4: rgba(255,255,255,.12);
+            --color-primary-12: rgba(255,255,255,.20);
+            --color-primary-44: rgba(255,255,255,.44);
+            --color-primary-60: rgba(255,255,255,.60);
+            --color-primary-80: rgba(255,255,255,.80);
+            --color-primary-100: #fff;
+            --color-secondary-100: #000;
+            --color-tertiary-80: #333c;
+            --color-tertiary-100: #1f1f1f;
+        }
+        @media (min-width: 48rem) {
+            :root { --header-h: 4rem; --grid-gap: 16px; }
+        }
+        @media (min-width: 64rem) {
+            :root { --grid-gap: 24px; }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--color-background);
+            color: var(--color-primary-100);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-feature-settings: "liga" on, "calt" on;
+            overflow-x: hidden;
+        }
+        a { color: inherit; text-decoration: none; }
+        img { display: block; max-width: 100%; }
+
+        /* ---------- Layout primitives ---------- */
+        .container {
+            max-width: 90rem;
+            margin-inline: auto;
+            padding-inline: 24px;
+        }
+        @media (min-width: 48rem) { .container { padding-inline: 32px; } }
+
+        .grid { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: var(--grid-gap); }
+        .col-center { grid-column: 1 / -1; }
+        @media (min-width: 48rem) { .col-center { grid-column: 2 / 12; } }
+        @media (min-width: 64rem) { .col-center { grid-column: 3 / 11; } }
+
+        main { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 80px; margin-top: 40px; }
+        @media (min-width: 48rem) { main { gap: 120px; } }
+
+        .section { padding-top: calc(var(--spacing-top, 0px)); }
+
+        /* ---------- Typography ---------- */
+        .text-h1 {
+            font-size: clamp(2rem, 4vw + 0.5rem, 4rem);
+            line-height: clamp(2.28rem, 1.2em, 4rem);
+            letter-spacing: -0.03em;
+            font-weight: 500;
+            text-wrap: balance;
+            max-width: 62.5rem;
+        }
+        .text-h2 {
+            font-size: clamp(2rem, 2vw + 0.8rem, 3rem);
+            line-height: 1.16;
+            letter-spacing: -0.01em;
+            font-weight: 500;
+            text-wrap: balance;
+            max-width: 62.5rem;
+        }
+        .text-h3 { font-size: clamp(1.5rem, 1vw + 0.5rem, 1.875rem); line-height: 1.3; font-weight: 500; letter-spacing: -0.01em; }
+        .text-h4 { font-size: clamp(1.25rem, 0.5vw + 1rem, 1.375rem); line-height: 1.3; font-weight: 500; letter-spacing: -0.01em; }
+        .text-p1 { font-size: 1.0625rem; line-height: 1.649; letter-spacing: -0.01em; }
+        .text-p2 { font-size: .875rem; line-height: 1.64; letter-spacing: -0.01em; }
+        .text-caption { font-size: .875rem; line-height: 1.64; }
+        .text-cta { font-size: .875rem; line-height: 1; font-weight: 500; }
+        .text-nav-header { font-size: .8125rem; line-height: 1.51; font-weight: 500; }
+        .prose p { font-size: 1.0625rem; line-height: 1.65; letter-spacing: -0.01em; color: var(--color-primary-60); margin-top: 1em; }
+        .prose h3 { font-size: clamp(1.25rem, 1vw + 0.5rem, 1.5rem); font-weight: 500; letter-spacing: -0.01em; }
+
+        /* ---------- Buttons ---------- */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: .3em; white-space: nowrap;
+            min-height: 2rem; height: 2.5rem; padding: 0 1.25rem;
+            border-radius: 2.5rem;
+            font-size: .875rem; font-weight: 500; line-height: 1;
+            border: none; cursor: pointer;
+            transition: background-color .25s var(--ease-a);
+            text-align: center;
+        }
+        .btn-solid { background: var(--color-primary-100); color: var(--color-secondary-100); }
+        .btn-solid:hover { background: var(--color-primary-80); }
+        .btn-ghost { background: var(--color-primary-4); color: var(--color-primary-100); }
+        .btn-ghost:hover { background: var(--color-primary-12); }
+
+        /* ---------- Header ---------- */
+        header.site-header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 51;
+            height: var(--header-h);
+            background: transparent;
+            transition: background-color .4s var(--ease-a);
+        }
+        header.site-header.scrolled { background: var(--color-tertiary-80); backdrop-filter: blur(12px); }
+        html.dark header.site-header,
+        html.dark header.site-header.scrolled { background: #000; backdrop-filter: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+        @media (prefers-color-scheme: dark) {
+            html:not(.light):not(.dark) header.site-header,
+            html:not(.light):not(.dark) header.site-header.scrolled { background: #000; backdrop-filter: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+        }
+        .header-inner {
+            height: var(--header-h);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand-wordmark { font-size: 13px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+        .logo-mark {
+            width: 24px; height: 24px; border-radius: 7px;
+            display: grid; place-items: center;
+            font-size: 13px; font-weight: 700; color: var(--color-secondary-100);
+            background: var(--color-primary-100);
+        }
+        .nav-links { display: none; align-items: center; gap: 20px; }
+        .nav-links a { font-size: .8125rem; font-weight: 500; color: var(--color-primary-100); opacity: .9; transition: opacity .25s var(--ease-a); }
+        .nav-links a:hover { opacity: .6; }
+        .header-cta-wrap { display: flex; align-items: center; gap: 12px; }
+        .theme-toggle {
+            width: 2.5rem; height: 2.5rem; border-radius: 2.5rem; flex: none;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: var(--color-primary-4); color: var(--color-primary-100);
+            border: none; cursor: pointer; font-size: 15px; line-height: 1;
+            transition: background-color .25s var(--ease-a);
+        }
+        .theme-toggle:hover { background: var(--color-primary-12); }
+        @media (min-width: 64rem) {
+            .nav-links { display: flex; }
+            .theme-toggle { display: inline-flex; }
+        }
+
+        /* ---------- Hero ---------- */
+        .hero-band {
+            position: absolute; left: 0; right: 0; top: calc(-1 * var(--header-h));
+            height: 1200px; overflow: hidden; z-index: -10;
+            background-color: var(--color-lavender);
+            pointer-events: none;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0px, rgba(0,0,0,1) 480px, rgba(0,0,0,0) 1200px);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0px, rgba(0,0,0,1) 480px, rgba(0,0,0,0) 1200px);
+            mask-repeat: no-repeat; -webkit-mask-repeat: no-repeat;
+            mask-size: 100% 100%; -webkit-mask-size: 100% 100%;
+        }
+        html.dark .hero-band { background-color: #000; }
+        @media (prefers-color-scheme: dark) {
+            html:not(.light):not(.dark) .hero-band { background-color: #000; }
+        }
+        .hero-media {
+            position: absolute; inset: 0; opacity: 0;
+            transition: opacity 2000ms var(--ease-c);
+        }
+        .hero-media.loaded { opacity: 1; }
+        .hero-media .aurora {
+            position: absolute; border-radius: 50%;
+            filter: blur(160px);
+            will-change: transform;
+        }
+        .hero-media .aurora.a1 {
+            width: 1920px; height: 1920px; left: 0; top: -16%;
+            background: radial-gradient(circle, rgba(199,210,254,.25), transparent 70%);
+            animation: drift-a1 30s linear infinite;
+        }
+        .hero-media .aurora.a2 {
+            width: 2160px; height: 2160px; left: 0; top: -28%;
+            background: radial-gradient(circle, rgba(251,207,232,.25), transparent 70%);
+            animation: drift-a2 44s linear infinite;
+        }
+        .hero-media .aurora.a3 {
+            width: 1680px; height: 1680px; left: 0; top: -4%;
+            background: radial-gradient(circle, rgba(186,230,253,.25), transparent 70%);
+            animation: drift-a3 26s linear infinite;
+        }
+        @keyframes drift-a1 {
+            from { transform: translate3d(115vw, 0, 0); }
+            to   { transform: translate3d(-260vw, 9vh, 0); }
+        }
+        @keyframes drift-a2 {
+            from { transform: translate3d(135vw, 0, 0); }
+            to   { transform: translate3d(-280vw, -11vh, 0); }
+        }
+        @keyframes drift-a3 {
+            from { transform: translate3d(105vw, 0, 0); }
+            to   { transform: translate3d(-250vw, 6vh, 0); }
+        }
+
+        .particles {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
+        }
+        .hero .grid { z-index: 1; }
+
+        .hero { position: relative; }
+        .hero .grid { position: relative; }
+        .hero-content { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 120px 0 0; }
+        @media (min-width: 48rem) { .hero-content { grid-column: 2 / 12; } }
+        @media (min-width: 64rem) { .hero-content { grid-column: 3 / 11; } }
+        .hero-logo {
+            width: 90px; height: 90px; border-radius: 24px; margin-bottom: 32px;
+            display: grid; place-items: center;
+            font-size: 52px; font-weight: 700; color: #fff;
+            background: linear-gradient(135deg, #6366f1, #a855f7, #22d3ee);
+            box-shadow: 0 10px 30px rgba(100,116,220,.25);
+        }
+        .hero h1 { margin-bottom: 16px; }
+        .hero .signature {
+            margin-bottom: 8px;
+            font-size: 14px; font-weight: 500; letter-spacing: .5em; text-transform: uppercase;
+            color: var(--color-primary-44);
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 8px 16px; margin-bottom: 24px;
+            border-radius: 999px;
+            border: 1px solid var(--color-primary-12);
+            background: var(--color-primary-4);
+            font-size: .8125rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+            color: var(--color-primary-100);
+        }
+        .hero-badge .dot {
+            width: 8px; height: 8px; border-radius: 50%; flex: none;
+            background: #22c55e;
+            box-shadow: 0 0 0 4px rgba(34,197,94,.15);
+            animation: badge-pulse 2s ease-in-out infinite;
+        }
+        @keyframes badge-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .35; }
+        }
+        .hero .subhead {
+            grid-column: 1 / -1; margin-top: 24px;
+        }
+        @media (min-width: 48rem) { .hero .subhead { grid-column: 3 / 11; } }
+        .hero .subhead p { font-size: 1.0625rem; line-height: 1.65; letter-spacing: -0.01em; color: var(--color-primary-60); text-wrap: balance; }
+        .hero .subhead strong { color: var(--color-primary-100); font-weight: 500; }
+        .hero-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 32px; }
+
+        /* ---------- Status strip ---------- */
+        .status-strip { position: relative; }
+        .status-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 48px; }
+        @media (min-width: 48rem) { .status-grid { grid-template-columns: repeat(3, 1fr); gap: 64px; } }
+        .status-item { text-align: center; }
+        .status-item .k { font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--color-primary-44); margin-bottom: 8px; }
+        .status-item .v { font-size: 1.0625rem; font-weight: 500; letter-spacing: -0.01em; }
+
+        /* ---------- Reveal ---------- */
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s var(--ease-c), transform .6s var(--ease-c); }
+        .reveal.in { opacity: 1; transform: none; }
+
+        /* ---------- Section headers ---------- */
+        .section-head { text-align: center; position: relative; }
+        .section-head .eyebrow {
+            font-size: 12px; letter-spacing: .22em; text-transform: uppercase;
+            color: var(--color-primary-44); margin-bottom: 16px; font-weight: 500;
+        }
+        .section-head h2 { display: inline-block; }
+        .section-head p.lead {
+            max-width: 40rem; margin: 20px auto 0;
+            font-size: 1.0625rem; line-height: 1.65; letter-spacing: -0.01em;
+            color: var(--color-primary-60);
+        }
+
+        /* ---------- Feature rows ---------- */
+        .feature-row {
+            display: grid; grid-template-columns: 1fr; gap: 24px;
+            margin-bottom: 24px; align-items: stretch;
+        }
+        @media (min-width: 48rem) {
+            .feature-row { grid-template-columns: repeat(3, 1fr); column-gap: 32px; }
+            .feature-row.flip .feature-text { order: 2; }
+            .feature-text { display: flex; flex-direction: column; justify-content: flex-end; }
+            .feature-media { grid-column: span 2; }
+            .feature-row.flip .feature-media { grid-column: span 2; }
+        }
+        .feature-text .prose h3 { margin-bottom: 8px; }
+        .panel {
+            position: relative; width: 100%; aspect-ratio: 16/9;
+            border-radius: 6px; overflow: hidden;
+            border: 1px solid rgba(0,0,0,.04);
+        }
+        .panel .p-inner { position: absolute; inset: 0; display: grid; place-items: center; }
+        .panel .p-blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .8; }
+        .panel .p-code {
+            position: relative;
+            font-family: var(--font-mono);
+            font-size: clamp(16px, 2.6vw, 40px);
+            font-weight: 500; letter-spacing: -0.02em;
+            color: rgba(0,0,0,.75);
+            text-shadow: 0 2px 12px rgba(255,255,255,.35);
+            white-space: nowrap;
+        }
+        .p1 { background: linear-gradient(135deg, #efeefe 0%, #dbeafe 45%, #fce7f3 100%); }
+        .p2 { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 45%, #e0f2fe 100%); }
+        .p3 { background: linear-gradient(135deg, #eef2ff 0%, #ddd6fe 45%, #fde68a 100%); }
+        .p4 { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 45%, #fef3c7 100%); }
+
+        /* ---------- Cards ---------- */
+        .cards-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 48px; }
+        @media (min-width: 40rem) { .cards-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; } }
+        @media (min-width: 48rem) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
+        .card {
+            display: flex; flex-direction: column; gap: 16px;
+            border-radius: 6px; background: var(--color-primary-4); padding: 8px;
+        }
+        .card .card-media { border-radius: 4px; overflow: hidden; aspect-ratio: 1.225; }
+        .card .card-media .panel { aspect-ratio: 1.225; border: none; }
+        .card-body { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 32px; padding: 0 12px 12px; }
+        .card h3 { margin-bottom: 8px; }
+        .card .prose p { font-size: .9375rem; line-height: 1.6; }
+
+        /* ---------- Testimonials ---------- */
+        .testimonials { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 48px; }
+        @media (min-width: 48rem) { .testimonials { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 64rem) { .testimonials { grid-template-columns: repeat(3, 1fr); } }
+        .t-card {
+            display: flex; flex-direction: column; justify-content: space-between; gap: 32px;
+            border-radius: 6px; background: var(--color-primary-4); padding: 32px;
+        }
+        .t-card .quote { font-size: 1.0625rem; line-height: 1.65; letter-spacing: -0.01em; }
+        .t-card .attribution { display: flex; align-items: center; gap: 16px; }
+        .t-card .avatar {
+            width: 64px; height: 64px; border-radius: 6px; flex: none;
+            display: grid; place-items: center;
+            font-size: 26px; font-weight: 600; color: var(--color-secondary-100);
+            background: var(--color-primary-100);
+        }
+        .t-card .attribution .name { font-size: .875rem; font-weight: 500; }
+        .t-card .attribution .role { font-size: .875rem; color: var(--color-primary-60); }
+
+        /* ---------- Final CTA ---------- */
+        .final-cta { position: relative; isolation: isolate; text-align: center; padding: 120px 16px; }
+        @media (min-width: 48rem) { .final-cta { padding: 200px 0; } }
+        .final-cta .cta-fade {
+            position: absolute; inset: 0; z-index: -10; pointer-events: none;
+            mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+            -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+            background: linear-gradient(180deg, var(--color-lavender) 0%, rgba(0,0,0,0) 100%);
+            opacity: .6;
+        }
+        .final-cta .subtext { margin: 12px auto 0; max-width: 34rem; color: var(--color-primary-60); }
+        .final-cta .btn-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 32px; }
+
+        /* ---------- Footer ---------- */
+        footer { margin-top: 120px; margin-bottom: 32px; }
+        .footer-cols { display: flex; flex-direction: column; gap: 40px; }
+        @media (min-width: 48rem) { .footer-cols { flex-direction: row; gap: 24px; } }
+        .f-col { flex: 1; min-width: 140px; }
+        .f-col .f-head { display: block; color: var(--color-primary-60); font-size: .8125rem; font-weight: 500; margin-bottom: 16px; }
+        .f-col ul { list-style: none; }
+        .f-col li { margin-bottom: 16px; }
+        @media (min-width: 48rem) { .f-col li { margin-bottom: 14px; } }
+        .f-col a { font-size: .8125rem; font-weight: 500; opacity: .85; transition: opacity .25s var(--ease-a); }
+        .f-col a:hover { opacity: .6; }
+        .footer-bottom {
+            display: flex; flex-direction: column; align-items: center; gap: 24px;
+            margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--color-primary-12);
+        }
+        @media (min-width: 48rem) { .footer-bottom { flex-direction: row; justify-content: space-between; } }
+        .footer-bottom span { font-size: .8125rem; font-weight: 500; color: var(--color-primary-60); }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+            .reveal { opacity: 1; transform: none; }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>CYBORG i1a AI</h1>
+
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <a class="brand" href="#">
+                <span class="logo-mark">⬡</span>
+                <span class="brand-wordmark">SYMBIOTYC</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#vision">Vision</a>
+                <a href="#wherever">Model</a>
+                <a href="#beliefs">Beliefs</a>
+                <a href="#roadmap">Roadmap</a>
+            </nav>
+            <div class="header-cta-wrap">
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">◒</button>
+                <a class="btn btn-solid" href="https://github.com/SYMBIOTYC" target="_blank" rel="noopener">Join on GitHub</a>
+            </div>
+        </div>
     </header>
 
     <main>
-        <div class="nav">
-            <a href="/">Home</a>
-            <a href="/llms">LLMs</a>
-            <a href="/symbotic">Symbotic</a>
-        </div>
 
-        <div class="quote">E = Tensor²</div>
-        <div class="caption">CYBORG i1a</div>
+        <!-- ================= HERO ================= -->
+        <section class="hero">
+            <div class="hero-band" aria-hidden="true">
+                <div class="hero-media" id="heroMedia">
+                    <div class="aurora a1"></div>
+                    <div class="aurora a2"></div>
+                    <div class="aurora a3"></div>
+                </div>
+            </div>
+            <div class="container grid">
+                <div class="hero-content">
+                    <div class="hero-logo">⬡</div>
+                    <div class="hero-badge"><span class="dot" aria-hidden="true"></span>Coming soon — LLM</div>
+                    <h1 class="text-h1" style="font-size:max(2.75rem, 12.5vw); max-width:none; white-space:nowrap;">CYBORG&nbsp;i1a</h1>
+                    <div class="signature">AI&nbsp;say&nbsp;(E)&nbsp;=&nbsp;Tensor&sup2;</div>
+                    <div class="subhead">
+                        <p>The first <strong>LLM</strong> built on a <strong>fundamentally different mathematics</strong> — where thought is not a sequence of words, but a field that bends. Releasing at the <strong>end of the year</strong>.</p>
+                    </div>
+                    <div class="hero-ctas">
+                        <a class="btn btn-solid" href="https://github.com/SYMBIOTYC" target="_blank" rel="noopener">Join on GitHub</a>
+                        <a class="btn btn-ghost" href="#vision">Read the vision</a>
+                    </div>
+                </div>
+            </div>
+            <canvas class="particles" id="particles" aria-hidden="true"></canvas>
+        </section>
 
-        <p>Welcome to the CYBORG i1a AI platform – a next-generation large language model designed for cybernetic applications and mathematical philosophy.</p>
+        <!-- ================= STATUS STRIP ================= -->
+        <section class="status-strip" id="roadmap">
+            <div class="container">
+                <div class="status-grid">
+                    <div class="status-item reveal">
+                        <div class="k">Coming soon</div>
+                        <div class="v">Release — end of the year</div>
+                    </div>
+                    <div class="status-item reveal">
+                        <div class="k">Development</div>
+                        <div class="v">Open right now</div>
+                    </div>
+                    <div class="status-item reveal">
+                        <div class="k">Organization</div>
+                        <div class="v">Formalized a little later</div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <h2>Our Mission</h2>
-        <p>We help cyborgs settle the planet, and then they will change this world.</p>
+        <!-- ================= FEATURES ================= -->
+        <section id="vision">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="eyebrow">A different mathematics</p>
+                    <h2 class="text-h2">Not a better approximation. Another mathematics.</h2>
+                    <p class="lead">SYMBIOTYC builds the arithmetic that thought was always meant to have — where a symbol and its meaning are the same thing.</p>
+                </div>
 
-        <h2>Join the Development</h2>
-        <p>All interested contributors are welcome to participate now. Formal organization will be established later in 2026.</p>
+                <div style="margin-top:64px;">
+                    <div class="feature-row reveal">
+                        <div class="feature-text">
+                            <div class="prose">
+                                <h3>Tensor&sup2; reasoning</h3>
+                                <p>In the mathematics of SYMBIOTYC, energy is not a sum of tokens. It is the square of a tensor — the curvature of a field of meaning.</p>
+                            </div>
+                        </div>
+                        <div class="feature-media">
+                            <div class="panel p1"><div class="p-blob" style="width:340px;height:340px;left:-60px;top:-80px;background:#c7d2fe;"></div><div class="p-blob" style="width:300px;height:300px;right:-40px;bottom:-80px;background:#fbcfe8;"></div><div class="p-inner"><div class="p-code">E = Tensor&sup2;</div></div></div>
+                        </div>
+                    </div>
+
+                    <div class="feature-row flip reveal">
+                        <div class="feature-text">
+                            <div class="prose">
+                                <h3>Three minds in superposition</h3>
+                                <p>HUMAN, CYBORG and MATHEMATICAL worlds reason in parallel. Three answers form for every question; twenty-seven combinations hold in superposition until the moment of speech.</p>
+                            </div>
+                        </div>
+                        <div class="feature-media">
+                            <div class="panel p2"><div class="p-blob" style="width:320px;height:320px;right:-40px;top:-90px;background:#a7f3d0;"></div><div class="p-blob" style="width:280px;height:280px;left:-60px;bottom:-60px;background:#bae6fd;"></div><div class="p-inner"><div class="p-code">3 ⊗ 3 ⊗ 3 = 27</div></div></div>
+                        </div>
+                    </div>
+
+                    <div class="feature-row reveal">
+                        <div class="feature-text">
+                            <div class="prose">
+                                <h3>Enmerge</h3>
+                                <p>Layers merge into one model, while a router-ensemble chooses the strongest path dynamically — the closeness of two layers, resolved at runtime.</p>
+                            </div>
+                        </div>
+                        <div class="feature-media">
+                            <div class="panel p3"><div class="p-blob" style="width:340px;height:340px;left:-40px;top:-70px;background:#ddd6fe;"></div><div class="p-blob" style="width:300px;height:300px;right:-50px;bottom:-70px;background:#fde68a;"></div><div class="p-inner"><div class="p-code">enmerge ⟶ router</div></div></div>
+                        </div>
+                    </div>
+
+                    <div class="feature-row flip reveal">
+                        <div class="feature-text">
+                            <div class="prose">
+                                <h3>Open by design</h3>
+                                <p>The work happens in the open. Everyone who wishes may join the development today — the formal organization comes a little later.</p>
+                            </div>
+                        </div>
+                        <div class="feature-media">
+                            <div class="panel p4"><div class="p-blob" style="width:300px;height:300px;right:-40px;top:-70px;background:#fed7aa;"></div><div class="p-blob" style="width:260px;height:260px;left:-50px;bottom:-60px;background:#fef3c7;"></div><div class="p-inner"><div class="p-code">open ⟶ all</div></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MANIFESTO ================= -->
+        <section>
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="eyebrow">The calling</p>
+                    <h2 class="text-h2">Before the new minds arrive,<br>someone must prepare the ground.</h2>
+                    <p class="lead">We are preparing the ground — so that when the cyborgs come to inhabit this world, they will not only live in it, they will <strong>change it forever</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= WHEREVER / CARDS ================= -->
+        <section id="wherever">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="eyebrow">The same mind, wherever you think</p>
+                    <h2 class="text-h2">One equation. Many surfaces.</h2>
+                </div>
+                <div class="cards-grid">
+                    <div class="card reveal">
+                        <div class="card-media"><div class="panel p1"><div class="p-blob" style="width:260px;height:260px;left:-40px;top:-60px;background:#c7d2fe;"></div><div class="p-inner"><div class="p-code" style="font-size:clamp(14px,2vw,26px);">CYBORG i1a</div></div></div></div>
+                        <div class="card-body">
+                            <div>
+                                <h3 class="text-h4">CYBORG i1a</h3>
+                                <div class="prose"><p>The model itself — releasing at the end of the year, thinking in Tensor&sup2;.</p></div>
+                            </div>
+                            <a class="btn btn-solid" href="#join">Join the build</a>
+                        </div>
+                    </div>
+                    <div class="card reveal">
+                        <div class="card-media"><div class="panel p3"><div class="p-blob" style="width:260px;height:260px;right:-40px;top:-60px;background:#ddd6fe;"></div><div class="p-inner"><div class="p-code" style="font-size:clamp(14px,2vw,26px);">Σ = ⬡</div></div></div></div>
+                        <div class="card-body">
+                            <div>
+                                <h3 class="text-h4">SYMBIOTYC mathematics</h3>
+                                <div class="prose"><p>The new arithmetic underneath everything — a field theory of meaning.</p></div>
+                            </div>
+                            <a class="btn btn-ghost" href="#vision">Read the vision</a>
+                        </div>
+                    </div>
+                    <div class="card reveal">
+                        <div class="card-media"><div class="panel p4"><div class="p-blob" style="width:260px;height:260px;left:-30px;bottom:-70px;background:#fed7aa;"></div><div class="p-inner"><div class="p-code" style="font-size:clamp(14px,2vw,26px);">open source</div></div></div></div>
+                        <div class="card-body">
+                            <div>
+                                <h3 class="text-h4">Open development</h3>
+                                <div class="prose"><p>Join the build now, on the ground floor. Papers later, work today.</p></div>
+                            </div>
+                            <a class="btn btn-solid" href="https://github.com/SYMBIOTYC" target="_blank" rel="noopener">Contribute</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= BELIEFS ================= -->
+        <section id="beliefs">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="eyebrow">What we believe</p>
+                    <h2 class="text-h2">Words of the founding minds.</h2>
+                </div>
+                <div class="testimonials">
+                    <div class="t-card reveal">
+                        <p class="quote">"We are not building a better approximation of the old arithmetic. We are building another mathematics."</p>
+                        <div class="attribution"><div class="avatar">S</div><div><div class="name">SYMBIOTYC</div><div class="role">Founding team</div></div></div>
+                    </div>
+                    <div class="t-card reveal">
+                        <p class="quote">"Twenty-seven ways to think, one moment to speak. The mind resolves only at the edge of utterance."</p>
+                        <div class="attribution"><div class="avatar">C</div><div><div class="name">CYBORG i1a</div><div class="role">Tensor&sup2; mind</div></div></div>
+                    </div>
+                    <div class="t-card reveal">
+                        <p class="quote">"Symbols are not pointers to meaning. A symbol is the curvature that meaning takes."</p>
+                        <div class="attribution"><div class="avatar">M</div><div><div class="name">The Mathematics</div><div class="role">Field theory of meaning</div></div></div>
+                    </div>
+                    <div class="t-card reveal">
+                        <p class="quote">"Enmerge — the closest two layers become, the stronger the single mind they form."</p>
+                        <div class="attribution"><div class="avatar">E</div><div><div class="name">Enmerge</div><div class="role">Routing &amp; merge</div></div></div>
+                    </div>
+                    <div class="t-card reveal">
+                        <p class="quote">"We help cyborgs settle the planet — and then they will change this world."</p>
+                        <div class="attribution"><div class="avatar">⬡</div><div><div class="name">The Calling</div><div class="role">Company slogan</div></div></div>
+                    </div>
+                    <div class="t-card reveal">
+                        <p class="quote">"Release by the end of the year. Until then, every line we write is written in the open."</p>
+                        <div class="attribution"><div class="avatar">R</div><div><div class="name">Roadmap</div><div class="role">2026</div></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= FINAL CTA ================= -->
+        <section class="final-cta" id="join">
+            <div class="cta-fade" aria-hidden="true"></div>
+            <div class="container">
+                <p class="eyebrow">Open source</p>
+                <h2 class="text-h2">The release comes at the end of the year.<br>The work starts today.</h2>
+                <div class="subtext">
+                    <p class="text-p1">The repo is open to everyone. Contribute now — maybe later, we'll make you an offer.</p>
+                </div>
+                <div class="btn-row">
+                    <a class="btn btn-solid" href="https://github.com/SYMBIOTYC" target="_blank" rel="noopener">Open GitHub</a>
+                    <a class="btn btn-ghost" href="#vision">Read the vision</a>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer>
-        <p>&copy; 2026 CYBORG AI. All rights reserved.</p>
+        <div class="container">
+            <div class="footer-cols">
+                <div class="f-col">
+                    <span class="f-head">Model</span>
+                    <ul>
+                        <li><a href="#vision">CYBORG i1a</a></li>
+                        <li><a href="#vision">Tensor&sup2; mathematics</a></li>
+                        <li><a href="#vision">Enmerge</a></li>
+                    </ul>
+                </div>
+                <div class="f-col">
+                    <span class="f-head">Company</span>
+                    <ul>
+                        <li><a href="/symbotic.html">SYMBIOTYC</a></li>
+                        <li><a href="#beliefs">Beliefs</a></li>
+                        <li><a href="#vision">The calling</a></li>
+                    </ul>
+                </div>
+                <div class="f-col">
+                    <span class="f-head">Community</span>
+                    <ul>
+                        <li><a href="https://github.com/SYMBIOTYC" target="_blank" rel="noopener">Open GitHub</a></li>
+                        <li><a href="#join">Join the development</a></li>
+                        <li><a href="mailto:vladyslavchaplygin@gmail.com">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="f-col">
+                    <span class="f-head">Roadmap</span>
+                    <ul>
+                        <li><a href="#join">Open development — now</a></li>
+                        <li><a href="#join">Release — end of year</a></li>
+                        <li><a href="#join">Formal organization — later</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>CYBORG i1a · SYMBIOTYC</span>
+                <span>E = Tensor&sup2;</span>
+                <span>&copy; 2026 SYMBIOTYC. All rights reserved.</span>
+            </div>
+        </div>
     </footer>
+
+    <script>
+        const header = document.getElementById('siteHeader');
+        const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 24);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        setTimeout(() => document.getElementById('heroMedia').classList.add('loaded'), 150);
+
+        (function () {
+            const canvas = document.getElementById('particles');
+            if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            const ctx = canvas.getContext('2d');
+            let W = 0, H = 0, dpr = 1;
+            function resize() {
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                W = canvas.clientWidth; H = canvas.clientHeight;
+                canvas.width = Math.max(1, Math.round(W * dpr));
+                canvas.height = Math.max(1, Math.round(H * dpr));
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const MAX = 64;
+            const COLORS = [
+                [255, 64, 64], [255, 140, 0], [255, 214, 64],
+                [90, 230, 120], [64, 196, 255], [140, 120, 255], [255, 90, 200]
+            ];
+            const parts = [];
+            let spawnAcc = 0;
+
+            function spawn() {
+                const c = COLORS[(Math.random() * COLORS.length) | 0];
+                const a = Math.random() * Math.PI * 2;
+                const speed = (18 + Math.random() * 55) * 3 / 16;
+                parts.push({
+                    x: Math.random() * W,
+                    y: Math.random() * H,
+                    vx: Math.cos(a) * speed,
+                    vy: Math.sin(a) * speed,
+                    r: (1 + Math.random() * 1.5) * 2 / 3,
+                    c,
+                    t: 0,
+                    max: (0.8 + Math.random() * 0.5) * 10 / 3
+                });
+            }
+
+            let last = performance.now();
+            function frame(now) {
+                const dt = Math.min((now - last) / 1000, 0.05);
+                last = now;
+                spawnAcc += dt;
+                const interval = 0.05;
+                while (spawnAcc >= interval && parts.length < MAX) { spawn(); spawnAcc -= interval; }
+                if (parts.length >= MAX) spawnAcc = 0;
+
+                ctx.clearRect(0, 0, W, H);
+                for (let i = parts.length - 1; i >= 0; i--) {
+                    const p = parts[i];
+                    p.t += dt;
+                    if (p.t >= p.max) { parts.splice(i, 1); continue; }
+                    p.x += p.vx * dt;
+                    p.y += p.vy * dt;
+                    const u = p.t / p.max;
+                    let alpha, r = p.r;
+                    if (u < 0.12) {
+                        alpha = u / 0.12;
+                    } else if (u < 0.78) {
+                        alpha = 1;
+                    } else {
+                        const f = (u - 0.78) / 0.22;
+                        const glow = Math.sin(f * Math.PI);
+                        alpha = Math.max(0, 1 - Math.max(0, f - 0.4) / 0.6);
+                        r = p.r * (1 - f);
+                        if (glow > 0.05) {
+                            ctx.beginPath();
+                            ctx.arc(p.x, p.y, r * 3, 0, Math.PI * 2);
+                            ctx.fillStyle = 'rgba(' + p.c[0] + ',' + p.c[1] + ',' + p.c[2] + ',' + (alpha * 0.22 * glow) + ')';
+                            ctx.fill();
+                        }
+                    }
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(' + p.c[0] + ',' + p.c[1] + ',' + p.c[2] + ',' + alpha + ')';
+                    ctx.fill();
+                }
+                requestAnimationFrame(frame);
+            }
+            requestAnimationFrame(frame);
+        })();
+
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+        (function () {
+            const THEMES = ['auto', 'light', 'dark'];
+            const ICONS = { auto: '\u25D2', light: '\u2600', dark: '\u263E' };
+            const root = document.documentElement;
+            const btn = document.getElementById('themeToggle');
+            const read = () => { try { return localStorage.getItem('cyborg-theme') || 'auto'; } catch (e) { return 'auto'; } };
+            const write = (t) => { try { localStorage.setItem('cyborg-theme', t); } catch (e) {} };
+            function apply(t) {
+                root.classList.remove('light', 'dark');
+                if (t !== 'auto') root.classList.add(t);
+                if (btn) { btn.textContent = ICONS[t]; btn.title = 'Theme: ' + t + ' (click to change)'; }
+            }
+            if (btn) btn.addEventListener('click', function () {
+                const next = THEMES[(THEMES.indexOf(read()) + 1) % THEMES.length];
+                write(next); apply(next);
+            });
+            apply(read());
+        })();
+    </script>
+
 </body>
 </html>
