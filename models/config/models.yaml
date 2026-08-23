@@ -1,0 +1,41 @@
+models:
+  qwen2.5-coder-3b:
+    path: "/Volumes/Work/CYBORG/models/qwen2.5-coder-3b-instruct-q4_k_m.gguf"
+    type: "gguf"
+    bias_profile: "CyborgCode"
+    weight: 0.5
+    local: true
+
+  stepfun-free:
+    path: "http://127.0.0.1:8787/v1/chat/completions"
+    type: "api"
+    bias_profile: "CyborgBalanced"
+    weight: 0.3
+    api_key_required: false
+    provider: "Kilo gateway"
+    model_id: "stepfun/step-3.7-flash:free"
+
+  ling-3.0:
+    path: "http://127.0.0.1:8787/v1/chat/completions"
+    type: "api"
+    bias_profile: "CyborgPhilosophy"
+    weight: 0.2
+    api_key_required: false
+    provider: "Kilo gateway"
+    model_id: "inclusionai/ling-3.0-flash:free"
+
+  nemotron-3-super-free:
+    path: "http://127.0.0.1:8787/v1/chat/completions"
+    type: "api"
+    bias_profile: "CyborgMath"
+    weight: 0.2
+    api_key_required: false
+    provider: "Kilo gateway"
+    model_id: "nvidia/nemotron-3-super-120b-a12b:free"
+
+  settings:
+    default_bias: 0.5
+    tensor_superposition: true
+    merge_strategy: "superposition"
+    ensemble_routing: true
+    kilo_gateway_api_key: "REPLACE_WITH_YOUR_CLOUDFLARE_API_TOKEN"
